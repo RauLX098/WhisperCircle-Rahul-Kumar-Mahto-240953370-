@@ -1,111 +1,148 @@
 # WhisperCircle
 
-A full-stack anonymous talking-club web application for a two-person college project.
+**Anonymous Talking Club and Discussion Platform**
 
-## Features in this starter
-1. Guest identity generation
-2. Topic-based group rooms
-3. Real-time group chat with Socket.IO
-4. Private one-to-one messages
-5. Online member counts
-6. Block users
-7. Report messages/users
-8. Basic moderator report queue
-9. Responsive dark interface
+WhisperCircle is a full-stack web application that lets people join topic-based group conversations and private one-to-one chats using pseudonymous guest identities. Users can choose or generate a nickname, explore discussion rooms, chat in real time, share anonymous confessions, and use basic safety tools such as reporting and blocking.
 
-## Stack
-- Frontend: React + Vite
-- Backend: Node.js + Express
-- Real-time: Socket.IO
-- Persistence: MongoDB + Mongoose (optional for local demo; in-memory fallback is included)
-- Security: Helmet, API/socket rate limits, input validation, guest session token
+## Features
+
+1. **Pseudonymous guest identity** – Join without creating an account and choose or generate a nickname.
+2. **Topic-based discussion rooms** – Browse six clubs: College Life, Confessions, Friends & Feelings, Gaming Zone, Music Lounge, and Anything Goes.
+3. **Real-time group chat** – Send messages instantly and view recent room history.
+4. **Online member list** – See who is currently present in a discussion room.
+5. **Private one-to-one chat** – Start a private conversation with another online member.
+6. **Anonymous confessions** – Share thoughts in a dedicated space without displaying the author's nickname.
+7. **Report and block** – Report messages with a reason and block private messages from a user.
+8. **Moderation queue** – Review or dismiss submitted reports.
+9. **Responsive interface** – Use the application on desktop and mobile screens.
+
+## Technology stack
+
+| Part | Technologies |
+|---|---|
+| Frontend | React 18, Vite, CSS, lucide-react |
+| Backend | Node.js, Express |
+| Real-time communication | Socket.IO |
+| Database | MongoDB, Mongoose |
+| Security and validation | Helmet, CORS, express-rate-limit, Zod, input sanitisation |
+| Testing | Node.js test runner, Playwright end-to-end tests |
+| Version control | Git and GitHub |
+
+## Project structure
+
+```text
+WhisperCircle/
+├── client/                 # React + Vite frontend
+│   ├── src/
+│   ├── index.html
+│   └── package.json
+├── server/                 # Express + Socket.IO backend
+│   ├── src/
+│   ├── tests/
+│   ├── .env.example
+│   └── package.json
+├── PROJECT_REPORT_TEMPLATE.md
+├── .gitignore
+└── README.md
+```
 
 ## Requirements
+
 - Node.js 20 or newer recommended
 - npm
-- MongoDB local or Atlas connection (optional; without it, data is temporary and disappears when server restarts)
+- MongoDB (optional for local demonstration; the server has an in-memory fallback)
 
-## Run locally
+## Run the project locally
+
+The frontend and backend run in separate terminals.
 
 ### 1. Start the backend
+
 ```bash
 cd server
-cp .env.example .env
 npm install
+```
+
+Copy `.env.example` to `.env`, then start the backend:
+
+```bash
 npm run dev
 ```
 
-### 2. Start the frontend in a second terminal
+The backend normally runs at `http://localhost:4000`.
+
+### 2. Start the frontend
+
+Open a second terminal from the project root:
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
-Open the Vite URL shown in your terminal, normally `http://localhost:5173`.
 
-If MongoDB is available, put its connection string in `server/.env` as `MONGODB_URI=...` and restart the server. The app can run without MongoDB using temporary in-memory storage.
+Open the local URL printed by Vite, normally `http://localhost:5173`.
 
-## Run the automated tests
-```bash
-cd server
-npm install
-npm test        # 12 backend tests; starts its own server on port 4100 (in-memory storage)
+### 3. Optional MongoDB setup
+
+To use persistent storage, add your MongoDB connection string to `server/.env`:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
 ```
 
-## What changed from the starter
-- Moderation API is now closed in production unless `DEMO_MODERATOR_KEY` is set and sent as the `x-demo-moderator` header.
-- Reports are built on the server from the stored message (reported user + message text), so a client cannot fake them; the queue shows the quoted message.
-- Private messages can be reported; private messages and reports are rate-limited.
-- Mobile: members shown as a chip strip (private chat works on phones); Leave/Moderation buttons added to the bottom bar; Back button in private chat.
+Keep real credentials private. Do not commit `.env` or publish database passwords. If MongoDB is not configured, the application uses temporary in-memory storage; that data is cleared when the server restarts.
 
-## Try it
-- Open the app in two separate browser profiles or an incognito window.
-- Enter different guest nicknames.
-- Join the same room and send messages.
-- Click a user in the room member list to start a private conversation.
-- Use the report button on messages and the block button in a private chat.
-- The moderator report list is a basic demo feature, not a production moderation console.
+## Run backend tests
 
-## Important privacy and safety notes
-This project provides pseudonymous public identities, not guaranteed anonymity. The server handles network requests and session tokens. Do not publish secrets or real personal information. Before public deployment, add persistent user bans, stronger moderation workflows, a privacy notice, retention rules, and abuse monitoring. Do not use this starter to collect sensitive personal data.
+From the `server` directory:
 
-## GitHub submission
-1. Create a new empty repository on GitHub.
-2. From the project root:
 ```bash
-git init
-git add .
-git commit -m "Build WhisperCircle anonymous chat platform"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/whispercircle.git
-git push -u origin main
+npm test
 ```
-Replace `YOUR-USERNAME` with your GitHub username.
 
-## Team work division (suggested)
-- Student 1: React UI, guest entry, room browser, chat screens, responsive styling.
-- Student 2: Express API, Socket.IO events, MongoDB models, reporting/blocking, testing and deployment.
-- Both: integration, testing, screenshots, report, and presentation.
+The project report records 12 passing backend tests and 34 passing end-to-end checks for the tested project version. Run the tests yourself before making claims about the current state of your copy.
 
-## Report screenshots to capture
-1. Guest entry / identity screen
-2. Room directory
-3. Live group chat with two browser sessions
-4. Private chat
-5. Report submission
-6. Moderator report queue
+## Try the application
 
-## Project report outline
-- Title page
-- Abstract
-- Problem statement and objectives
-- Existing system and proposed system
-- Technology stack
-- System architecture
-- Feature descriptions
-- Database design
-- Screenshots and test cases
-- Division of work
-- Limitations and future enhancements
-- Conclusion
-- GitHub repository link
+1. Open the application in two separate browser profiles or one normal and one incognito window.
+2. Enter different guest nicknames.
+3. Join the same room from both browser sessions.
+4. Send group messages and confirm that they appear in both sessions.
+5. Select another online member to start a private chat.
+6. Try the report and block options.
+7. Open the confessions area and the demo moderation queue.
+
+## Privacy and safety notes
+
+WhisperCircle provides **pseudonymous public identities, not guaranteed anonymity**. The server handles technical connection information. The moderation queue is a classroom demonstration, not a production moderation system. Before public deployment, add appropriate authentication and moderator permissions, privacy notices, data-retention controls, stronger abuse prevention, and production-grade configuration.
+
+Do not use this educational project to collect sensitive personal information. Never publish passwords, API keys, or database credentials.
+
+## Team members
+
+| Name | Registration number | Roll number |
+|---|---:|---:|
+| **Rahul Kumar Mahto** | **240953370** | 56 |
+| **Akshith K** | **240953290** | 58 |
+
+**Registration numbers are shown prominently as the primary student identifiers.** Both team members contribute to integration, testing, documentation, screenshots, and the final presentation. Update the division of work below to reflect the tasks each member actually completed.
+
+### Division of work
+
+- **Rahul Kumar Mahto** – Frontend implementation and user-interface work (confirm this allocation).
+- **Akshith K** – Backend, real-time communication, data storage, and server-side features (confirm this allocation).
+- **Both members** – Integration, testing, documentation, screenshots, and presentation.
+
+> Please verify the individual task allocation with both team members before submitting the report.
+
+## Project report
+
+The accompanying project report contains the problem statement, objectives, system design, technology stack, feature descriptions, database design, screenshots, testing summary, division of work, limitations, and conclusion.
+
+## GitHub repository
+
+Repository: [WhisperCircle](https://github.com/RaulX098/WhisperCircle)
+
+---
+**WhisperCircle – Anonymous Talking Club and Discussion Platform**
